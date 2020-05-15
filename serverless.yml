@@ -1,0 +1,37 @@
+service: shopify-inventory-update
+
+provider:
+  name: aws
+  endpointType: REGIONAL
+  runtime: nodejs12.x
+
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'eu-west-1'}
+  stackName: shopify-store-inventory-${self:provider.stage}
+  deploymentBucket:
+    name: ${ssm:/shopify-store/serverless/deployment-bucket~true}
+
+  environment:
+    SFTP_HOME_DIRECTORY: ${ssm:/shopify-store/${self:provider.stage}/SFTP_HOME_DIRECTORY~true}
+    SFTP_HOST: ${ssm:/shopify-store/${self:provider.stage}/SFTP_HOST~true}
+    SFTP_MODE: ${ssm:/shopify-store/${self:provider.stage}/SFTP_MODE~true}
+    SFTP_PASSWORD_OR_KEY: ${ssm:/shopify-store/${self:provider.stage}/SFTP_PASSWORD_OR_KEY~true}
+    SFTP_PORT: ${ssm:/shopify-store/${self:provider.stage}/SFTP_PORT~true}
+    SFTP_USERNAME: ${ssm:/shopify-store/${self:provider.stage}/SFTP_USERNAME~true}
+
+functions:
+  ProcessStockUpdate:
+    handler: dist/src/handler.processStockFeed
+    description: Shopify Store inventory update.
+    timeout: 240
+    events:
+      # Run every 60 minutes from the moment of deployment
+      - schedule:
+          rate: rate(60 minutes)
+          enabled: ${self:custom.serviceEnabled.${self:provider.stage}, false}
+
+plugins:
+  localPath: '../../.serverless_plugins'
+  modules:
+    - serverless-pseudo-parameters
+    - serverless-terraform-outputs

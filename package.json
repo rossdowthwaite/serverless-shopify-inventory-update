@@ -1,0 +1,43 @@
+{
+  "name": "inventory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "rimraf dist/",
+    "build": "tsc",
+    "deploy": "sls deploy -s",
+    "deploy:dev": "npm run build && npm run deploy -- dev",
+    "deploy:prod": "npm run build && npm run deploy -- prod",
+    "test": "jest --runInBand --detectOpenHandles",
+    "mock-supplier-inventory": "npm run build && node dist/scripts/create-mock-inventory-file.js",
+    "test-inventory-update": "npm run build && node dist/scripts/test-inventory-update.js",
+    "test-update": "npm run build && node dist/scripts/create-mock-inventory-file.js && node dist/scripts/test-inventory-update.js"
+  },
+  "author": "bluelab",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.668.0",
+    "axios": "^0.19.2",
+    "csvtojson": "^2.0.10",
+    "fs-extra": "^7.0.1",
+    "jsonexport": "^2.4.1",
+    "moment": "^2.25.3",
+    "serverless": "^1.69.0",
+    "ssh2-sftp-client": "^2.5.0",
+    "typescript": "^3.8.3",
+    "dotenv": "^6.2.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.51",
+    "@types/dotenv": "^6.1.1",
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.13.5",
+    "@types/fs-extra": "^5.0.5",
+    "@types/ssh2-sftp-client": "^2.5.0",
+    "jest": "^25.5.3",
+    "serverless-pseudo-parameters": "^2.5.0",
+    "serverless-terraform-outputs": "0.0.4",
+    "ts-jest": "^25.4.0"
+  }
+}

@@ -1,0 +1,4 @@
+src/mock-update
+node_modules
+.env
+dist
