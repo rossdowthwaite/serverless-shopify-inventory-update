@@ -23,7 +23,7 @@
     "fs-extra": "^7.0.1",
     "jsonexport": "^2.4.1",
     "moment": "^2.25.3",
-    "serverless": "^1.69.0",
+    "serverless": "^3.25.1",
     "ssh2-sftp-client": "^2.5.0",
     "typescript": "^3.8.3",
     "dotenv": "^6.2.0"
